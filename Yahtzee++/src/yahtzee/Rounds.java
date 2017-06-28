@@ -12,33 +12,37 @@ import java.util.Scanner;
  * @author tumesh
  */
 public class Rounds {
-    private int score;
+    private int score; // Score for this round
     //private static int totalScore;
-    private  int numberOfRolls;
-    private static int yahtzeesCount = 0;
-    private static final int maxNumberOfRolls = 3;
-    private int [] result = new int [5];
-    private Player p;
-    private static boolean [] categoriesScored = new boolean[13];
-    private static enum Categories  {US1, US2, US3,  US4, US5, US6, THREE, FOUR, SMALLSTRAIGHT, LARGESTRAIGHT, FULLHOUSE, YAHTZEE, CHANCE};
+    private  int numberOfRolls;      // number of rolls for this round
+    private static int yahtzeesCount = 0; // number of yahtzees that have occured
+    private static final int maxNumberOfRolls = 3; // maximum number of rolls in a round
+    private int [] catFrequencyArray = new int [6]; // frequency of each dice in this round
+    private int [] result = new int [5];            // dice result in this round
+    private Player p;                               // player for this round                        
+    private static boolean [] categoriesScored = new boolean[13];   // scored categories for this round
+    private static enum Categories   // An enumuration has been declared
+    {US1, US2, US3,  US4, US5, US6, THREE, FOUR, SMALLSTRAIGHT, LARGESTRAIGHT, FULLHOUSE, YAHTZEE, CHANCE};
     
+    
+    
+    // Constructoris for the class
     public Rounds(){
     
     }
     
+    
+    // A Set of public methods for this methods
     public Rounds(Player pIn, int score){
         this.p = pIn;
         this.score = score;
     }
-    
     public void initialize(){
         System.out.println("Welcome to Yathzee... \nPress 1 to Play");
         Scanner sc1 = new Scanner(System.in);
         while(sc1.nextInt() != 1){
         }
     }
-    
-    
     public void printResult(){
     
         // this function prints result of the function
@@ -54,7 +58,6 @@ public class Rounds {
         }
         System.out.println("");
     }
-    
     public void playRound(){
         System.out.println("Press 1 to roll Dices");
         Scanner sc1 = new Scanner(System.in);
@@ -81,6 +84,8 @@ public class Rounds {
 
     }
     
+    
+    // A Set of private helper methods 
     private boolean isThreeOfAKind(){
         
         int count = 0;
@@ -102,7 +107,6 @@ public class Rounds {
         }
         return threeOfAKind;
     }
-    
     private boolean isFourofAKind(){ 
         int count = 0;
         boolean fourOfAKind = false;
@@ -123,7 +127,6 @@ public class Rounds {
         }
         return fourOfAKind;
     }   
-    
     private boolean isYathzee(){
         int count = 0;
         //result[0] = result[1] = result[2] = result[3] = result[4] = 0;
@@ -146,21 +149,17 @@ public class Rounds {
         return yathzee;
     
     }
-//    
-//    private boolean isSmallStraight(){
-//    
-//        //int count = 0;
-//        boolean isSmallStraight = false;
-//        for(int i = 0; i< this.result.length; i++){
-//           for(int j = i+1; j < this.result.length-1; j++){
-//               if(this.result[i] == this.result[j]-1 && this.result[j] == this.result[j+1]-1){
-//                   isSmallStraight = true;
-//               }
-//           }    
-//        }    
-//        return isSmallStraight;
-//    }
-    
+    private void populateCategoriesArray(){
+        
+        for(int i = 0; i < this.catFrequencyArray.length; i++){
+            for(int j = 0; j < this.result.length; j++){
+                if(this.result[j] == (i+1))
+                    ++catFrequencyArray[i];
+            }
+            System.out.println((i+1) + "Has occoured " + catFrequencyArray[i] + "Times");
+        }
+        
+    } 
     private boolean isSmallStraight(){
         boolean isSmallStraight = false;
         int count = 0;
@@ -174,14 +173,16 @@ public class Rounds {
         }
         return isSmallStraight;
     }
-    
     private boolean isFullHouse(){
-        boolean isFullHouse = false;
-        
-    
-        return isFullHouse;
+        boolean count1 = false , count2 = false;
+        for(int i = 0; i<this.catFrequencyArray.length; i++){
+            if(this.catFrequencyArray[i] == 2)
+                count1 = true;
+            if(this.catFrequencyArray[i] == 3)
+                count2 = true;
+        }
+        return (count1&&count2);
     }
-    
     private boolean isLargeStraight(){
     
         int count=0;
@@ -198,8 +199,7 @@ public class Rounds {
         }
 
         return isLargeStraight;
-    }
-    
+    }    
     private int sumResult(){
         int sum = 0;
         for(int i = 0; i< this.result.length; i++){
@@ -207,9 +207,24 @@ public class Rounds {
         }
         return sum;
     }
+    private void scoreChances(){
+        System.out.println("Select which of the upper Scores you want");
+        for(int i = 0; i < this.catFrequencyArray.length; i++ ){
+            if(catFrequencyArray[i]>0){
+                System.out.print(" Press " + (i+1) + " to score upper ");
+                System.out.println(i+1);
+            }
+        }
+        
+        
+                
+        
 
+    }
+    
     public void showCategories(){
         
+        this.populateCategoriesArray();
         System.out.println("Following Categories are applicable to this round");
         System.out.println("Please Select Which to Score");
         Scanner sc1 = new Scanner(System.in);
@@ -262,7 +277,9 @@ public class Rounds {
                 break;
             case 4:
                 Rounds.categoriesScored[Rounds.Categories.FULLHOUSE.ordinal()] = true;
-                //this.score = ;
+                this.score = 25;
+                p.addScore(score);
+                System.out.println("Round Score =  " + this.score + " Total Score = " + p.getScore());
                 break;
             case 5:
                 Rounds.categoriesScored[Rounds.Categories.LARGESTRAIGHT.ordinal()] = true;
@@ -278,6 +295,12 @@ public class Rounds {
                 break;
             case 7:
                 Rounds.categoriesScored[Rounds.Categories.CHANCE.ordinal()] = true;
+                this.score=sumResult();
+                p.addScore(score);
+                System.out.println("Round Score =  " + this.score + " Total Score = " + p.getScore());
+                break;
+            case 8:
+                scoreChances();
                 break;
         }
     

@@ -43,8 +43,10 @@ public class Player {
         for (int i = 0; i < result.length; i++) {
 
             result[i] = dices[i].nextInt(6) + 1;
+            
 
         }
+        
         sortResult(result);
         return result;
     }
