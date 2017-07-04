@@ -15,16 +15,21 @@ public class GamePlay extends Rounds{
     public static void main(String [] args){
         
             Player p1 = new Player();
-            Rounds [] R = new Rounds[13];
+            Rounds [] R = new Rounds[2];
             for(int i = 0; i < R.length; i++){
                 R[i] = new Rounds(p1, 0);
                 
             }
-            R[1].initialize();
-            R[1].playRound();
-            R[1].showCategories();
-           // R[1].scorePoints();
-            
+//            R[1].initialize();
+//            R[1].playRound();
+//            R[1].showCategories();
+//           // R[1].scorePoints();
+           for(int i = 0; i < R.length; i++){
+                System.out.println("Round number " + (i+1));
+                R[i].initialize();
+                R[i].playRound();
+                R[i].showCategories();
+           }
     
     
     }

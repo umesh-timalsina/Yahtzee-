@@ -199,7 +199,11 @@ public class Rounds {
         }
 
         return isLargeStraight;
-    }    
+    }
+    private void printRoundResults(){
+        
+         System.out.println("Round Score =  " + this.score + " Total Score = " + p.getScore());
+    }
     private int sumResult(){
         int sum = 0;
         for(int i = 0; i< this.result.length; i++){
@@ -207,14 +211,54 @@ public class Rounds {
         }
         return sum;
     }
-    private void scoreChances(){
+    private void scoreUpperScores(){
+        Scanner sc1 = new Scanner(System.in);
         System.out.println("Select which of the upper Scores you want");
         for(int i = 0; i < this.catFrequencyArray.length; i++ ){
-            if(catFrequencyArray[i]>0){
+            if(catFrequencyArray[i]>0 && categoriesScored[i] == false){
                 System.out.print(" Press " + (i+1) + " to score upper ");
                 System.out.println(i+1);
             }
         }
+        switch(sc1.nextInt()){
+            case 1:
+                this.score = catFrequencyArray[0] * 1;
+                p.addScore(this.score);
+                Rounds.categoriesScored[Rounds.Categories.US1.ordinal()] = true;
+                this.printRoundResults();
+                break;
+            case 2:
+                this.score = catFrequencyArray[1] * 2;
+                p.addScore(this.score);
+                this.printRoundResults();
+                Rounds.categoriesScored[Rounds.Categories.US2.ordinal()] = true;
+                break;
+            case 3:
+                this.score = catFrequencyArray[2] * 3;
+                p.addScore(this.score);
+                Rounds.categoriesScored[Rounds.Categories.US3.ordinal()] = true;
+                this.printRoundResults();
+                break;
+            case 4:
+                this.score = catFrequencyArray[3] * 4;
+                p.addScore(this.score);
+                Rounds.categoriesScored[Rounds.Categories.US4.ordinal()] = true;
+                this.printRoundResults();
+                break;
+            case 5:
+                this.score = catFrequencyArray[4] * 5;
+                p.addScore(this.score);
+                Rounds.categoriesScored[Rounds.Categories.US5.ordinal()] = true;
+                this.printRoundResults();
+                break;
+            case 6:
+                this.score = catFrequencyArray[5] * 6;
+                p.addScore(this.score);
+                Rounds.categoriesScored[Rounds.Categories.US6.ordinal()] = true;
+                this.printRoundResults();
+                break;    
+        }
+ 
         
         
                 
@@ -248,8 +292,14 @@ public class Rounds {
             System.out.println("6- Small Straight");
         
         }
-        System.out.println("7 - Chance");
-        System.out.println("8 - Upper Scores");
+        if(!categoriesScored[Categories.CHANCE.ordinal()]){
+            System.out.println("7 - Chance");
+       
+        }
+        boolean upperScoreResult = (categoriesScored[0] && categoriesScored[1] && categoriesScored[2] && categoriesScored[3] && categoriesScored[4] && categoriesScored[5]);
+        if(!upperScoreResult){
+            System.out.println("8 - Upper Scores");
+        }
         this.scorePoints(sc1.nextInt());
     
     }
@@ -300,7 +350,7 @@ public class Rounds {
                 System.out.println("Round Score =  " + this.score + " Total Score = " + p.getScore());
                 break;
             case 8:
-                scoreChances();
+                scoreUpperScores();
                 break;
         }
     
