@@ -9,13 +9,13 @@ package yahtzee;
  *
  * @author tumesh
  */
-public class GamePlay extends Rounds{
+public class GamePlay{
     
     
     public static void main(String [] args){
         
             Player p1 = new Player();
-            Rounds [] R = new Rounds[2];
+            Rounds [] R = new Rounds[13];
             for(int i = 0; i < R.length; i++){
                 R[i] = new Rounds(p1, 0);
                 
